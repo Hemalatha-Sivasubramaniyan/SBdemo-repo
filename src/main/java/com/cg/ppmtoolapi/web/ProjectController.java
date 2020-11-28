@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +45,24 @@ public class ProjectController {
 	@GetMapping("/{projectIdentifier}")
 	public ResponseEntity<?> getProjectById(@PathVariable String projectIdentifier){
 		return new ResponseEntity<Project>( projectService.findProjectByProjectIdentifier(projectIdentifier),HttpStatus.OK);
+	}
+	/*
+	 * http://localhost:8080/api/projects/all use this in postman to get all data.
+	 * before using this post the data using http://localhost:8080/api/projects
+	 */
+	@GetMapping("/all")
+	public Iterable<Project> getAllProjects(){
+		return projectService.findAllProjects();
+	}
+	/*
+	 * http://localhost:8080/api/projects/proj3 -in postman
+	 * 	  before using this post the data using http://localhost:8080/api/projects.
+	 * Project with Id : PROJ3 Deleted! - O/P
+	 */
+	@DeleteMapping("/{projectIdentifier}")
+	public ResponseEntity<?> deleteProject(@PathVariable String projectIdentifier){
+		projectService.deleteProjectByProjectIdentifier(projectIdentifier);
+		return new ResponseEntity<String> ("Project with Id : "+projectIdentifier.toUpperCase()+" Deleted!",HttpStatus.OK);
 	}
 
 }

@@ -31,6 +31,22 @@ public class ProjectService {
 		}
 		return project;
 	}
-
+	/*
+	 * to get all project as list in postman
+	 */
+	public Iterable<Project> findAllProjects(){
+		return projectRepository.findAll();
+	}
+ 
+	/*
+	 * delete data by projectIdentifier
+	 */
+	public void deleteProjectByProjectIdentifier(String projectIdentifier) {
+		Project project=findProjectByProjectIdentifier(projectIdentifier.toUpperCase());
+		if(project==null) {
+			throw new ProjectIDException("ProjectIdentifier " + projectIdentifier + " not available");
+		}
+		projectRepository.delete(project);
+	}
 
 }
