@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,8 +33,17 @@ public class ProjectController {
 		if(errorMap!=null) return errorMap;
 		Project newProject = projectService.saveOrUpdate(project);
 		return new ResponseEntity<Project>(newProject, HttpStatus.CREATED);
-//		Project newProject = projectService.saveOrUpdate(project);
-//		return new ResponseEntity<Project>(newProject, HttpStatus.CREATED);
+
+	}
+	
+	/*
+	 * http://localhost:8080/api/projects/proj2 use this kind of request in postman
+	 * before using this post the data using http://localhost:8080/api/projects.
+	 * This is used to get project details by projectIfntifier
+	 */
+	@GetMapping("/{projectIdentifier}")
+	public ResponseEntity<?> getProjectById(@PathVariable String projectIdentifier){
+		return new ResponseEntity<Project>( projectService.findProjectByProjectIdentifier(projectIdentifier),HttpStatus.OK);
 	}
 
 }
